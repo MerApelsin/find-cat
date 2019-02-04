@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react';
 
-class Admin extends Component {
+class HomeManager extends Component {
 
   render() {
     return (
@@ -14,4 +14,4 @@ class Admin extends Component {
   }
 }
 
-export default Admin;
+export default HomeManager;

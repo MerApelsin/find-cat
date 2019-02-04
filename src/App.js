@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import './App.css';
 import throttle from 'lodash.throttle'
-import RadioButtons from './components/radiobuttons';
-import About from './components/about.js';
-import Login from './components/auth';
+import { BrowserRouter as Router, Route,Link } from 'react-router-dom'
+
+import AdminView from './components/views/admin.js';
+import HomeView from './components/views/home.js';
 
 class App extends Component {
   state = {
     isMobile: false,
-    query: '',
-    selectedOption: 0,
   }
   
   componentDidMount() {
@@ -26,22 +25,40 @@ class App extends Component {
     }, 200);
   }
 
-  onChange = (e) => { this.setState({[e.target.name]: e.target.value})}
-
   render() {
     return (
+    <Router>
       <div className='app-container'>
-        <About/>
-        <div>
-            <RadioButtons items={["Alla typer", "Endast Katthem", "Endast Kattpensionat"]} onSelect={(index) => { this.setState({selectedOption: index}); }}/>
-            <div style={{"display": "flex", "flex-direction":"row","justify-content": "center"}}>
-                <input type="text" id="query" name="query" onChange={this.onChange} value={this.state.title} /><button onClick={() => {console.log("hej")}}>sök</button>
-            </div>
-        </div>
-        <Login/>
+        <ul>
+            <li><Link to="/Admin">Admin</Link></li>
+            <li><Link to="/">Karta</Link></li>
+        </ul>
+        <Route exact path="/Admin" render={(props) => <AdminView/>}/>
+        <Route exact path="/" render={(props) => <HomeView/>}/>
       </div>
+    </Router>
     );
   }
 }
 
 export default App;
+
+/*  <Router>
+          <div className='mainContainer'>
+            <div className='mainMenu'>
+              <nav>
+                <ul>
+                  <li><Link to="/">Feed</Link></li>
+                  <li><Link to="/calendar">Kalender</Link></li>
+                  <li><Link to="/rules">Regler</Link></li>
+                  <li>TBA ramverk</li>
+                </ul>
+              </nav>
+              <Button onClick={this.logout}>logga ut</Button>
+            </div>
+            
+            <Route exact path="/" render={(props) => <DashboardRedirect {...props} associationData={this.state.associationData} userType={this.state.userType} assocID={this.state.assocID}/>}/>
+            <Route exact path="/calendar" render={(props) => <Calendar {...props} assocID={this.state.assocID}/>}/>
+            <Route exact path="/rules" render={(props) => <Rules {...props} associationData={this.state.associationData} userType={this.state.userType} assocID={this.state.assocID}/>}/>
+          </div>
+        </Router> */

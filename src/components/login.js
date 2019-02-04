@@ -2,7 +2,7 @@
 //Same for mobile + desktop
 import React, { Component } from 'react';
 import api from '../firebase.js';
-import Admin from './admin.js';
+import HomeManager from './homeManager.js';
 
 class Login extends Component {
     state = {
@@ -55,7 +55,7 @@ class Login extends Component {
         }
         else{
             return(
-                <Admin/>
+                <HomeManager/>
             );
         }
      
