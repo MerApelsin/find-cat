@@ -28,37 +28,34 @@ class Login extends Component {
    
     onChange = (e) => { this.setState({[e.target.name]: e.target.value})}
 
-    onSubmit = e => {
-        e.preventDefault();
+    loginUser = () => {
         const { username, password } = this.state;
         api.signIn(username,password)
             .catch(({message}) => { this.setState({errorMsg: message, username: '', password: ''})});
-    };
+    }
     
+    logOutUser = () => {    
+        api.signOut();
+    }
   
-    render() {
-        const {authUser, errorMsg} = this.state;
-        if(!authUser){
-            return (
-                <div className='auth-container'>
+    render() 
+    { 
+        return (
+        <div>
+            {!this.state.authUser && <div className='auth-container'>
                     <h3>Admin inlogg</h3>
-                    <h4>{errorMsg}</h4>
+                    <h4>{this.state.errorMsg}</h4>
                     <form>
-                        <label HTMLfor=''>Användarnamn</label><br/>
+                        <label htmlFor=''>Användarnamn</label><br/>
                         <input type='text' id="username" name="username" onChange={this.onChange} value={this.state.username}/><br/>
-                        <label HTMLFor=''>Lösenord</label><br/>
+                        <label htmlFor=''>Lösenord</label><br/>
                         <input type='password' id='password' name='password' onChange={this.onChange} value={this.state.password}/><br/>
-                        <input type='submit' value='Login'/>
                     </form>
-                </div>
-              );
-        }
-        else{
-            return(
-                <HomeManager/>
-            );
-        }
-     
+                    <button onClick={this.loginUser}>Login</button>
+                </div>}
+            {this.state.authUser && <HomeManager logOut={this.logOutUser}/>}
+        </div>
+        );
     }
   }
   
