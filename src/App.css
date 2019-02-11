@@ -10,3 +10,19 @@
 .radioButton label{
     margin: 0.3rem;
 }
+
+.map-container
+{
+    padding-top: 2rem;
+}
+.map {
+    fill: turquoise;
+}
+.map path{
+    stroke: black;
+}
+
+.map path:hover{
+    fill: blue;
+}
+

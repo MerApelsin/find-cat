@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 import throttle from 'lodash.throttle'
-import { BrowserRouter as Router, Route,Link } from 'react-router-dom'
 
 import AdminView from './components/views/admin.js';
 import HomeView from './components/views/home.js';
@@ -9,6 +8,7 @@ import HomeView from './components/views/home.js';
 class App extends Component {
   state = {
     isMobile: false,
+    adminPage: false,
   }
   
   componentDidMount() {
@@ -25,19 +25,33 @@ class App extends Component {
     }, 200);
   }
 
+  toggleView = () => {
+    let current = this.state.adminPage;
+    current ? this.setState({adminPage: false}) : this.setState({adminPage: true});
+  }
+
+  renderButton = (value) => {
+     return (<button onClick={this.toggleView}>{value}</button>);
+  }
+
   render() {
-    return (
-    <Router>
-      <div className='app-container'>
-        <ul>
-            <li><Link to="/Admin">Admin</Link></li>
-            <li><Link to="/">Karta</Link></li>
-        </ul>
-        <Route exact path="/Admin" render={(props) => <AdminView/>}/>
-        <Route exact path="/" render={(props) => <HomeView/>}/>
-      </div>
-    </Router>
-    );
+      const {adminPage} = this.state;
+      if(!adminPage){
+        return (
+            <div className='app-container'>
+                {this.renderButton('Logga in')}
+                <HomeView/>
+            </div>
+        );
+      }
+      else{
+        return (
+            <div className='app-container'>
+                {this.renderButton('Tillbaka')}
+                <AdminView/>
+            </div>
+        );
+      }
   }
 }
 
