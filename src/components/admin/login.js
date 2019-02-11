@@ -1,7 +1,7 @@
 //loginform + auth handling.
 //Same for mobile + desktop
 import React, { Component } from 'react';
-import api from '../firebase.js';
+import api from '../../firebase.js';
 import HomeManager from './homeManager.js';
 
 class Login extends Component {

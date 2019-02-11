@@ -4,8 +4,8 @@ import 'firebase/firestore';
 
 var config = {
     apiKey: '',
-    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-    databaseURL: process.env.FIREBASE_DB_URL,
+    authDomain: '',
+    databaseURL: '',
     projectId: "findcats-14739",
     storageBucket: "",
     messagingSenderId: "811135046525"
@@ -27,15 +27,15 @@ var config = {
         this.auth.signOut();
     }
 
-    uploadData = (where, data) => {
-        this.db.collection(where)
-        .add({data})
-        .then(function(docRef) {
-            return {type:'success', msg: docRef.id};
-        })
-        .catch(function(error) {
-            return {type:'error', msg: error};
-        });
+    uploadData = async (where, data) => {
+        try {
+            let docRef = await this.db.collection(where).add({data})
+            return {type:'success', msg: 'doc ' + docRef.id + ' written!'};
+
+        }
+        catch(err){
+            return {type:'fail', msg: err};
+        }
     }
 
     deleteEntry = (where,id) => {
@@ -46,15 +46,12 @@ var config = {
         });
     }
 
-    fetchData = (where) => {
-        return this.db.collection(where).get()
-        
-        /*.then(function(querySnapshot) {
-            querySnapshot.forEach(function(doc) {
-                // doc.data() is never undefined for query doc snapshots
-                console.log(doc.id, " => ", doc.data());
-            });
-        });*/
+    fetchDataQuery = async (col, query) => {
+        return this.db.collection(col).where("searchTerms","array-contains",query).get();
+    }
+
+    fetchDataMap = async (col,map) => {
+        return this.db.collection(col).where("regionCode", "==",map).get();
     }
   }
 

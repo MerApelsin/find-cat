@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Login from '../login.js';
+import Login from '../admin/login.js';
 
 class AdminView extends Component {
 

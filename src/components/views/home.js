@@ -14,16 +14,38 @@ class HomeView extends Component {
         mapSelection: '',
         responseHomes: '',
         responseVacation: '',
+        loading: false,
     }
 
     onChange = (e) => { this.setState({[e.target.name]: e.target.value})}
 
     setMapSelection = (id) => {
-        this.setState({mapSelection: id}, () => {this.getHomes();});
+        this.setState({mapSelection: id}, () => {this.getHomesByMap();});
     }
 
-    getHomes = () => {
-        const {mapSelection,  query} = this.state;
+    getHomesByMap = async () => {
+        const {mapSelection} = this.state;
+        //await api.fetchDataMap(col, mapSelection)
+        switch(this.state.selectedOption){
+            case 0:
+            //gör 2 gets, skicka till result
+            break;
+            case 1:
+            //katthem
+            //gör 1 get, skicka till result
+            break;
+            case 2:
+            //pensionat
+            //---||---
+            break;
+            default:
+            break;
+        }
+    }
+
+    getHomesByQuery = async () => {
+        const {query} = this.state;
+        //await api.fetchDataQuery(col, query)
         switch(this.state.selectedOption){
             case 0:
             //gör 2 gets, skicka till result
@@ -55,7 +77,8 @@ class HomeView extends Component {
                 <Map setSelection={this.setMapSelection}/>
             </div>
             <div>
-                {this.state.response !== '' && <Results homes={this.state.responseHomes} vacation={this.state.responseVacation} admin={false}/>}
+                {this.state.loading && <div>Loading gif thingy</div>}
+                {(this.state.response !== '' && !this.state.loading) && <Results option={this.state.selectedOption} homes={this.state.responseHomes} vacation={this.state.responseVacation}/>}
             </div>
         </div>
     );

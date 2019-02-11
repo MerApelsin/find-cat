@@ -11,6 +11,8 @@
     margin: 0.3rem;
 }
 
+/* ---- Map.js ---- */
+
 .map-container
 {
     padding-top: 2rem;
@@ -24,5 +26,33 @@
 
 .map path:hover{
     fill: blue;
+}
+
+/* ---- homeManager.js ---- */
+
+.admin-container{
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+.admin-upload{
+    display: flex;
+    flex-direction: column;
+    margin-left: 2rem;
+    margin-right: 2rem;
+}
+
+.admin-search{
+    align-content: center;
+}
+.admin-search button{
+    margin-right: 0.2rem;
+}
+
+.admin-logout{
+    width: auto;
+    flex-grow: 0;
+    margin-left: 4rem;
 }
 

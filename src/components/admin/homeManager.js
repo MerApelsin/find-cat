@@ -1,19 +1,21 @@
 import React, { Component } from 'react';
-import RadioButtons from '../components/radiobuttons.js';
-import api from '../firebase.js';
-import Results from './results.js';
+import RadioButtons from '../radiobuttons.js';
+import api from '../../firebase.js';
+import AdminResults from './adminResults.js';
 
 class HomeManager extends Component {
     state = {
         name: '',
         link: '',
-        town: '',
+        district: '',
         munici: '',
         region: '',
         query: '',
         selectedOption: 0,
         response: '',
         msg: '',
+        responseHomes: '',
+        responseVacation: '',
         regionCodes: {SE_BD: 'Norrbotten',
             SE_AC: 'Västerbotten',
             SE_Z: 'Jämtland',
@@ -44,23 +46,26 @@ class HomeManager extends Component {
         return foundKey.replace("_", "-");
       }
 
-    uploadEntry = () => 
+    uploadEntry = async () => 
     {
         let toUpload = {
             name: this.state.name,
             link: this.state.link,
-            town: this.state.town,
+            district: this.state.district,
             municipality: this.state.munici,
             region: this.state.region,
-            regionCode: this.getKeyByValue(this.state.regionCodes,this.state.region)
+            regionCode: this.getKeyByValue(this.state.regionCodes,this.state.region),
+            searchTerms: [this.state.district, this.state.munici, this.state.region]
         }
         if(this.state.selectedOption === 0) //katthem
         {
-           this.handleUpload(api.uploadData('CatHomes',toUpload));
+            let res = await api.uploadData('CatHomes',toUpload);
+            this.handleUpload(res);
         }
         else //pensionat
         {
-           this.handleUpload(api.uploadData('CatBoardingHomes',toUpload));
+            let res = await api.uploadData('CatBoardingHomes',toUpload)
+            this.handleUpload(res);
         }
     }
 
@@ -70,7 +75,7 @@ class HomeManager extends Component {
             this.setState({msg: uploadRes.msg})
             break;
             case 'success':
-            this.setState({msg: uploadRes.msg, name: '', link:'', town:'', munici:'', region:''})
+            this.setState({msg: uploadRes.msg, name: '', link:'', district:'', munici:'', region:''})
             break;
             default:
             break;
@@ -80,8 +85,8 @@ class HomeManager extends Component {
     render() {
         return (
         <div className='admin-container'>
-            <button onClick={this.props.logOut}>Logga ut</button>
-            <div>
+            
+            <div className='admin-upload'>
                 <h4>Lägg upp ett:</h4>
                 <RadioButtons items={['Katthem', 'Kattpensionat']} onSelect={(index) => { this.setState({selectedOption: index}); }}/>
                 <form>
@@ -89,8 +94,8 @@ class HomeManager extends Component {
                     <input type='text' id='name' name='name' onChange={this.onChange} value={this.state.title} /><br/>
                     <label htmlFor='name'>Länk:</label><br/>
                     <input type='text' id='link' name='link' onChange={this.onChange} value={this.state.title} /><br/>
-                    <label htmlFor='name'>Stad:</label><br/>
-                    <input type='text' id='town' name='town' onChange={this.onChange} value={this.state.title} /><br/>
+                    <label htmlFor='name'>Ort:</label><br/>
+                    <input type='text' id='district' name='district' onChange={this.onChange} value={this.state.title} /><br/>
                     <label htmlFor='name'>Kommun:</label><br/>
                     <input type='text' id='munici' name='munici' onChange={this.onChange} value={this.state.title} /><br/>
                     <label htmlFor='name'>Län:</label><br/>
@@ -99,12 +104,13 @@ class HomeManager extends Component {
                 <p>{this.state.msg}</p>
                 <button onClick={this.uploadEntry}>Lägg upp</button>
             </div>
-            <div>
-                <button>Visa alla</button><button>Katthem</button><button>Pensionat</button>
+            <div className='admin-search'>
+                <button>Visa allt</button><button>Katthem</button><button>Pensionat</button>
                 <p>Eller sök:</p>
                 <input type="text" id="query" name="query" onChange={this.onChange} value={this.state.title}/><button>Sök</button>
-                {this.state.response && <Results data={this.state.response} admin={true}/>}
+                {this.state.response && <AdminResults homes={this.state.responseHomes} vacation={this.state.responseVacation}/>}
             </div>
+            <button onClick={this.props.logOut} className='admin-logout'>Logga ut</button>
         </div>
         );
     }
