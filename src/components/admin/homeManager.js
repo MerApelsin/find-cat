@@ -44,10 +44,19 @@ class HomeManager extends Component {
     getKeyByValue = (object, value) => {
         let foundKey = Object.keys(object).find(key => object[key] === value);
         return foundKey.replace("_", "-");
-      }
+    }
+
+    getTime = (d) => { 
+        const monthNames = ["Januari", "Feburari", "Mars", "April", "Maj", "Juni",
+            "Juli", "Augusti", "September", "Oktober", "November", "December"];
+        let month = monthNames[d.getMonth()];
+        let datestring = d.getDate().toString() + " " + month + " " + d.getFullYear();
+        return datestring;
+    }
 
     uploadEntry = async () => 
     {
+        let d = new Date();
         let toUpload = {
             name: this.state.name,
             link: this.state.link,
@@ -55,7 +64,8 @@ class HomeManager extends Component {
             municipality: this.state.munici,
             region: this.state.region,
             regionCode: this.getKeyByValue(this.state.regionCodes,this.state.region),
-            searchTerms: [this.state.district, this.state.munici, this.state.region]
+            searchTerms: [this.state.name,this.state.district, this.state.munici, this.state.region],
+            uploaded: this.getTime(d)
         }
         if(this.state.selectedOption === 0) //katthem
         {

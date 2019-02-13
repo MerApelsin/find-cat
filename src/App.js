@@ -12,6 +12,9 @@ class App extends Component {
   }
   
   componentDidMount() {
+    if(window.innerWidth < 550){
+      this.setState({isMobile: true});
+    }
     window.addEventListener('resize', this.throttledHandleWindowResize);
   }
 
@@ -19,10 +22,8 @@ class App extends Component {
     window.removeEventListener('resize', this.throttledHandleWindowResize);
   }
 
-  throttledHandleWindowResize = () => {
-    return throttle(() => {
-      this.setState({ isMobile: window.innerWidth < 550 })
-    }, 200);
+  throttledHandleWindowResize = () => { 
+    setTimeout(()=>{ this.setState({isMobile:  window.innerWidth < 550})}, 500);
   }
 
   toggleView = () => {
@@ -40,7 +41,7 @@ class App extends Component {
         return (
             <div className='app-container'>
                 {this.renderButton('Logga in')}
-                <HomeView/>
+                <HomeView isMobile={this.state.isMobile}/>
             </div>
         );
       }
@@ -56,23 +57,3 @@ class App extends Component {
 }
 
 export default App;
-
-/*  <Router>
-          <div className='mainContainer'>
-            <div className='mainMenu'>
-              <nav>
-                <ul>
-                  <li><Link to="/">Feed</Link></li>
-                  <li><Link to="/calendar">Kalender</Link></li>
-                  <li><Link to="/rules">Regler</Link></li>
-                  <li>TBA ramverk</li>
-                </ul>
-              </nav>
-              <Button onClick={this.logout}>logga ut</Button>
-            </div>
-            
-            <Route exact path="/" render={(props) => <DashboardRedirect {...props} associationData={this.state.associationData} userType={this.state.userType} assocID={this.state.assocID}/>}/>
-            <Route exact path="/calendar" render={(props) => <Calendar {...props} assocID={this.state.assocID}/>}/>
-            <Route exact path="/rules" render={(props) => <Rules {...props} associationData={this.state.associationData} userType={this.state.userType} assocID={this.state.assocID}/>}/>
-          </div>
-        </Router> */

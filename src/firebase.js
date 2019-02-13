@@ -3,9 +3,9 @@ import 'firebase/auth';
 import 'firebase/firestore';
 
 var config = {
-    apiKey: '',
-    authDomain: '',
-    databaseURL: '',
+    apiKey: "",
+    authDomain: "",
+    databaseURL: "",
     projectId: "findcats-14739",
     storageBucket: "",
     messagingSenderId: "811135046525"
