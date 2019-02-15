@@ -3,9 +3,9 @@ import 'firebase/auth';
 import 'firebase/firestore';
 
 var config = {
-    apiKey: "",
-    authDomain: "",
-    databaseURL: "",
+    apiKey: '',
+    authDomain: 'findcats-14739.firebaseapp.com',
+    databaseURL: "https://findcats-14739.firebaseio.com",
     projectId: "findcats-14739",
     storageBucket: "",
     messagingSenderId: "811135046525"
@@ -29,7 +29,7 @@ var config = {
 
     uploadData = async (col, data) => {
         try {
-            let docRef = await this.db.collection(col).add({data})
+            let docRef = await this.db.collection(col).add(data);
             return {type:'success', msg: 'doc ' + docRef.id + ' written!'};
 
         }
@@ -51,7 +51,7 @@ var config = {
     }
 
     fetchDataMap = async (col,map) => {
-        return this.db.collection(col).where("regionCode", "==",map).get();
+        return this.db.collection(col).where("regionCode", "==", map).get();
     }
   }
 

@@ -36,6 +36,8 @@ class HomeView extends Component {
     getHomesByMap = async () => {
         this.setState({loading: true});
         const {mapSelection} = this.state;
+        console.log(mapSelection);
+        
         //await api.fetchDataMap(col, mapSelection)
         switch(this.state.selectedOption){
             case 0:
@@ -94,7 +96,7 @@ class HomeView extends Component {
                     <RadioButtons items={["Alla typer", "Endast Katthem", "Endast Kattpensionat"]} onSelect={(index) => { this.setState({selectedOption: index}); }}/>
                     {!this.state.mapSearch && <div>
                         <div style={{"display": "flex", "flexDirection":"row","justifyContent": "center"}}>
-                            <input type="text" id="query" name="query" onChange={this.onChange} value={this.state.title} /><button>sök</button>
+                            <input type="text" id="query" name="query" onChange={this.onChange} value={this.state.title} /><button onClick={this.fetchDataQuery}>sök</button>
                         </div>
                     </div>}
                     {this.state.mapSearch && <div>

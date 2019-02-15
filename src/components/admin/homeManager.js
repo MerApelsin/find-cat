@@ -85,34 +85,37 @@ class HomeManager extends Component {
             this.setState({msg: uploadRes.msg})
             break;
             case 'success':
-            this.setState({msg: uploadRes.msg, name: '', link:'', district:'', munici:'', region:''})
+            this.setState({msg: uploadRes.msg})
             break;
             default:
             break;
         }
     }
 
+    clearFields = () => {
+        this.setState({name: '', link:'', district:'', munici:'', region:''});
+    }
+
     render() {
         return (
         <div className='admin-container'>
-            
             <div className='admin-upload'>
                 <h4>Lägg upp ett:</h4>
                 <RadioButtons items={['Katthem', 'Kattpensionat']} onSelect={(index) => { this.setState({selectedOption: index}); }}/>
                 <form>
                     <label htmlFor='name'>Hemmets namn:</label><br/>
-                    <input type='text' id='name' name='name' onChange={this.onChange} value={this.state.title} /><br/>
+                    <input type='text' id='name' name='name' onChange={this.onChange} value={this.state.name} /><br/>
                     <label htmlFor='name'>Länk:</label><br/>
-                    <input type='text' id='link' name='link' onChange={this.onChange} value={this.state.title} /><br/>
+                    <input type='text' id='link' name='link' onChange={this.onChange} value={this.state.link} /><br/>
                     <label htmlFor='name'>Ort:</label><br/>
-                    <input type='text' id='district' name='district' onChange={this.onChange} value={this.state.title} /><br/>
+                    <input type='text' id='district' name='district' onChange={this.onChange} value={this.state.district} /><br/>
                     <label htmlFor='name'>Kommun:</label><br/>
-                    <input type='text' id='munici' name='munici' onChange={this.onChange} value={this.state.title} /><br/>
+                    <input type='text' id='munici' name='munici' onChange={this.onChange} value={this.state.munici} /><br/>
                     <label htmlFor='name'>Län:</label><br/>
-                    <input type='text' id='region' name='region' onChange={this.onChange} value={this.state.title} /><br/>
+                    <input type='text' id='region' name='region' onChange={this.onChange} value={this.state.region} /><br/>
                 </form>
                 <p>{this.state.msg}</p>
-                <button onClick={this.uploadEntry}>Lägg upp</button>
+                <button onClick={this.uploadEntry}>Lägg upp</button><button onClick={this.clearFields}>Rensa fält</button>
             </div>
             <div className='admin-search'>
                 <button>Visa allt</button><button>Katthem</button><button>Pensionat</button>

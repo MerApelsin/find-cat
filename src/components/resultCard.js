@@ -16,7 +16,12 @@ class ResultCard extends React.Component {
         const {name, url, district, munici, region, time} = this.props;
       return (
         <div>
-            <h1>Hello, {this.props.name}</h1>
+            <h2>{name}</h2>
+            <p>uppladdad den {time}</p>
+            <h3><a href={url}>Länk till hem</a></h3>
+            <h3>{district}</h3>
+            <h3>{munici}</h3>
+            <h3>{region}</h3>
         </div>
       );
     }
