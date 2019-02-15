@@ -27,9 +27,9 @@ var config = {
         this.auth.signOut();
     }
 
-    uploadData = async (where, data) => {
+    uploadData = async (col, data) => {
         try {
-            let docRef = await this.db.collection(where).add({data})
+            let docRef = await this.db.collection(col).add({data})
             return {type:'success', msg: 'doc ' + docRef.id + ' written!'};
 
         }
@@ -38,8 +38,8 @@ var config = {
         }
     }
 
-    deleteEntry = (where,id) => {
-        this.db.collection(where).doc(id).delete().then(function() {
+    deleteEntry = (col,id) => {
+        this.db.collection(col).doc(id).delete().then(function() {
             console.log("Document successfully deleted!");
         }).catch(function(error) {
             console.error("Error removing document: ", error);
