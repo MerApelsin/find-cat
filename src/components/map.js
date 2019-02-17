@@ -3,16 +3,28 @@ import React, { Component } from 'react';
 class Map extends Component {
     state = {
         active: '',
+        reload: false,
+    }
+
+    componentDidUpdate(prevProps){
+        if(this.props.selected !== prevProps.selected){
+            this.setState({reload: true});
+        }     
     }
 
     mapClick = (id) => {
-        if(this.state.active === '')
+        if (this.state.active === '')
         {
             let element = document.getElementById(id);
             element.style.fill = 'green';
             this.setState({active:id}, () => {this.props.setSelection(this.state.active)});
         }
-        else if(id !== this.state.active){
+
+        else if (id === this.state.active && this.state.reload){
+            this.setState({reload: false}, () => {this.props.setSelection(this.state.active);}) 
+        }
+
+        else if (id !== this.state.active){
             let prev = document.getElementById(this.state.active);
             prev.style.fill = '';
             let element = document.getElementById(id);

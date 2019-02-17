@@ -12,8 +12,9 @@ class HomeView extends Component {
         query: '',
         selectedOption: 0,
         mapSelection: '',
-        responseHomes: '',
-        responseVacation: '',
+        response: '',
+        type: '',
+        errormsg: '',
         loading: false,
         mapSearch: true
     }
@@ -36,25 +37,17 @@ class HomeView extends Component {
     getHomesByMap = async () => {
         this.setState({loading: true});
         const {mapSelection} = this.state;
-        console.log(mapSelection);
         
-        //await api.fetchDataMap(col, mapSelection)
         switch(this.state.selectedOption){
             case 0:
-            //gör 2 gets, skicka till result
-            let homes = await api.fetchDataMap('CatHomes', mapSelection);
-            let vacs = await api.fetchDataMap('CatBoardingHomes',mapSelection);
-            this.setState({responseHomes: homes, responseVacation: vacs});
+            //katthem
+            let homesOnly = await this.createDataArray('map','CatHomes',mapSelection)
+            this.setState({response: homesOnly, type:'Katthem'});
             break;
             case 1:
-            //katthem
-            let homesOnly = await api.fetchDataMap('CatHomes',mapSelection);
-            this.setState({responseHomes: homesOnly});
-            break;
-            case 2:
             //pensionat
-            let vacsOnly = await api.fetchDataMap('CatBoardingHomes',mapSelection);
-            this.setState({responseVacation: vacsOnly});
+            let vacsOnly = await this.createDataArray('map','CatBoardingHomes',mapSelection);
+            this.setState({response: vacsOnly,type:'Kattpensionat'});
             break;
             default:
             break;
@@ -62,29 +55,50 @@ class HomeView extends Component {
 
     }
     getHomesByQuery = async () => {
-        this.setState({loading: true});
         const {query} = this.state;
-        //await api.fetchDataQuery(col, query)
-        switch(this.state.selectedOption){
-            case 0:
-            //gör 2 gets, skicka till result
-            let homes = await api.fetchDataQuery('CatHomes',query);
-            let vacs = await api.fetchDataQuery('CatBoardingHomes',query);
-            this.setState({responseHomes: homes, responseVacation: vacs});
-            break;
-            case 1:
-            let homesOnly = await api.fetchDataQuery('CatHomes',query);
-            this.setState({responseHomes: homesOnly});
-            //katthem
-            break;
-            case 2:
-            //pensionat
-            let vacsOnly = await api.fetchDataQuery('CatBoardingHomes',query);
-            this.setState({responseVacation: vacsOnly});
-            break;
-            default:
-            break;
+        
+        if(query.length > 0) {
+            this.setState({loading: true, errormsg: ''});
+            const term = query.charAt(0).toUpperCase() + query.toLowerCase().slice(1);
+            switch(this.state.selectedOption){
+                case 0:
+                let homesOnly = await this.createDataArray('string','CatHomes',term);
+                this.setState({response: homesOnly, query: '', type:'Katthem'});
+                //katthem
+                break;
+                case 1:
+                //pensionat
+                let vacsOnly = await this.createDataArray('string','CatBoardingHomes',term);
+                this.setState({response: vacsOnly, query: '', type: 'Kattpension'});
+                break;
+                default:
+                break;
+            }
         }
+        else {
+            this.setState({errormsg: 'Tomt fält!'});
+        }
+    }
+
+    createDataArray = async (type,path,query) => {  
+        let tempArr = [];
+        let response = '';
+        
+        if(type === 'map'){
+            response = await api.fetchDataMap(path,query);
+        }
+        else {
+            response = await api.fetchDataQuery(path,query);
+        }
+        
+        response.forEach((doc) => {
+            let data = doc.data();
+
+            let currentHome = {id: doc.id ,name:data.name, link:data.link, district:data.district,
+                munici:data.municipality ,region:data.region, time:data.uploaded};
+            tempArr.push(currentHome);
+        });
+        return tempArr;
     }
 
     render() {
@@ -93,19 +107,21 @@ class HomeView extends Component {
                 <div>
                     <About/>
                     <button onClick={this.toggleSearchType}>{this.state.mapSearch ? 'Söka via text' : 'Sök via karta' }</button>
-                    <RadioButtons items={["Alla typer", "Endast Katthem", "Endast Kattpensionat"]} onSelect={(index) => { this.setState({selectedOption: index}); }}/>
+                    <RadioButtons items={["Katthem", "Kattpensionat"]} onSelect={(index) => { this.setState({selectedOption: index}); }}/>
                     {!this.state.mapSearch && <div>
+                        <p>{this.state.errormsg}</p>
                         <div style={{"display": "flex", "flexDirection":"row","justifyContent": "center"}}>
-                            <input type="text" id="query" name="query" onChange={this.onChange} value={this.state.title} /><button onClick={this.fetchDataQuery}>sök</button>
+                            
+                            <input type="text" id="query" name="query" onChange={this.onChange} value={this.state.query} /><button onClick={this.getHomesByQuery}>sök</button><br/>
                         </div>
                     </div>}
                     {this.state.mapSearch && <div>
-                        <Map setSelection={this.setMapSelection}/>
+                        <Map selected={this.state.selectedOption} setSelection={this.setMapSelection}/>
                     </div>}
                     <div>
                         <h3>Resultat</h3>
                         {this.state.loading && <div>Loading gif thingy</div>}
-                        {(this.state.responseHomes !== '' || this.state.responseVacation !== '' ) && <Results option={this.state.selectedOption} changeLoading={this.changeLoading} homes={this.state.responseHomes} vacation={this.state.responseVacation}/>}
+                        {(this.state.responseHomes !== '' || this.state.responseVacation !== '' ) && <Results type={this.state.type} selected={this.state.selectedOption} changeLoading={this.changeLoading} homes={this.state.response}/>}
                     </div>
                 </div>);
         }

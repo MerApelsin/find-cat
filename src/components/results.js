@@ -3,84 +3,40 @@ import ResultCard from './resultCard.js';
 
 class Result extends Component {
     state = {
-        catHomes: [],
-        vacHomes: []
+        Homes: [],
+        msg: '',
+        done: false,
     }
 
-    componentDidMount(){
-        this.handleData();
-    }
-
-    componentDidUpdate(prevProps, prevState){
-        if(this.props.homes !== prevProps.homes || this.props.vacation !== prevProps.vacation){
-            this.handleData();
+    componentDidUpdate(prevProps){
+        if(this.props.homes !== prevProps.homes){
+            this.setState({Homes:[], msg: ''}, () => {this.createRenderArray(this.props.homes);})
         }
     }
 
-    handleData= () => {        
-        const {homes, vacation} = this.props;
-        let homeArray = [];
-        let vacArray = [];
-        if(homes && vacation){
-           homeArray = this.createDataArray(homes);
-           vacArray = this.createDataArray(vacation);
-        }
-        else if(homes){
-            homeArray = this.createDataArray(homes);
+    createRenderArray = (dataArray) => {
+        let renderArray = [];
+        if(dataArray.length <= 0){
+            this.setState({msg: 'Inga resultat', done:true}, () => {this.props.changeLoading();});
         }
         else {
-            vacArray = this.createDataArray(vacation);
-        }
-        this.createRenderArray(homeArray,vacArray);
-    }
-
-    createDataArray = (response) => {
-        let tempArr = [];
-        
-        response.forEach((doc) => {
-            let data = doc.data();
-            let currrentHome = {name:data.name, link:data.link, district:data.district,
-                munici:data.municipality ,region:data.region, time:data.uploaded};
-            tempArr[tempArr.length-1] = currrentHome;
-        });
-        return tempArr;
-    }
-
-    createRenderArray = (homeArray, vacArray) => {
-        this.props.changeLoading();
-        let homeRender = [];
-        let vacRender = [];
-        if(homeArray.length > 0){
-            console.log(homeArray, 'meep');
+            renderArray = dataArray.map((item) => {
+                
+                return <ResultCard key={item.id} name={item.name} url={item.link} district={item.district}
+                    munici={item.munici} region={item.region} time={item.time}/>
+            });
             
-            homeRender = homeArray.map((item) => {
-                //map array to elements
-                return <ResultCard name={item.name} url={item.link} district={item.district}
-                munici={item.munici} region={item.region} time={item.time}/>
-            });
+            this.setState({Homes: renderArray, done: true}, () => {this.props.changeLoading();});
         }
-        if(vacArray.length > 0){
-            vacRender = vacArray.map((item) => {
-                return <ResultCard name={item.name} url={item.link} district={item.district}
-                munici={item.munici} region={item.region} time={item.time}/>
-            });
-        }
-        this.setState({catHomes: homeRender, vacHomes: vacRender});
     }
 
     render() {
         return (
         <div>
-            {this.state.catHomes.length > 0 && 
-            <div>
-                <h3>Katthem</h3>
-                {this.state.catHomes}
-            </div>}
-            {this.state.vacHomes.length > 0 && 
-            <div>
-                <h3>Kattpensionat</h3>
-                {this.state.vacHomes}
-            </div>}
+            {this.state.done && <h2>{this.props.type}</h2>}
+            {this.state.msg}
+            {this.state.Homes.length > 0 &&
+                this.state.Homes}
         </div>
     );
   }

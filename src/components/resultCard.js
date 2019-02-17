@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 /*export default function card(props) {
     return (
@@ -14,14 +14,15 @@ import React, { Component } from 'react';
 class ResultCard extends React.Component {
     render() {
         const {name, url, district, munici, region, time} = this.props;
+        
       return (
-        <div>
+        <div className='result-card'>
             <h2>{name}</h2>
             <p>uppladdad den {time}</p>
-            <h3><a href={url}>Länk till hem</a></h3>
-            <h3>{district}</h3>
-            <h3>{munici}</h3>
-            <h3>{region}</h3>
+            <h3>Länk till hem: <a href={url}>här</a></h3>
+            <h3>Ort: {district}</h3>
+            <h3>Kommun: {munici}</h3>
+            <h3>Län: {region}</h3>
         </div>
       );
     }

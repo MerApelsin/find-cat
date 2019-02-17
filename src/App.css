@@ -56,3 +56,9 @@
     margin-left: 4rem;
 }
 
+/* ----- resultCard.js ----- */
+
+.result-card{
+    border: 1px solid black;
+}
+
