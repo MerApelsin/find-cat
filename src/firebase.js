@@ -50,6 +50,10 @@ var config = {
         return this.db.collection(col).where("searchTerms","array-contains",query).get();
     }
 
+    fetchAllFromCol = async (col) =>{
+        return this.db.collection(col).get();
+    } 
+
     fetchDataMap = async (col,map) => {
         return this.db.collection(col).where("regionCode", "==", map).get();
     }

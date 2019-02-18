@@ -12,10 +12,10 @@ class HomeManager extends Component {
         region: '',
         query: '',
         selectedOption: 0,
-        response: '',
         msg: '',
         responseHomes: '',
         responseVacation: '',
+        loading: false,
         regionCodes: {SE_BD: 'Norrbotten',
             SE_AC: 'Västerbotten',
             SE_Z: 'Jämtland',
@@ -52,6 +52,57 @@ class HomeManager extends Component {
         let month = monthNames[d.getMonth()];
         let datestring = d.getDate().toString() + " " + month + " " + d.getFullYear();
         return datestring;
+    }
+
+    getHomesByQuery = async () => {
+        const {query} = this.state;
+        console.log('query admin')
+        if(query.length > 0) {
+            this.setState({loading: true, errormsg: ''});
+            const term = query.charAt(0).toUpperCase() + query.toLowerCase().slice(1);
+            
+            let homesOnly = await this.createDataArray('CatHomes',term);
+            let vacsOnly = await this.createDataArray('CatBoardingHomes',term);
+            this.setState({responseHomes: homesOnly, responseVacation: vacsOnly, query: ''});
+        }
+    }
+
+    fetchData = async(col, home) => {
+        console.log('all admin');
+        this.setState({loading: true, errormsg: ''});
+        let res = await api.fetchAllFromCol(col);
+        let resArr = [];
+        res.forEach((doc) => {
+            let data = doc.data();
+
+            let currentHome = {id: doc.id ,name:data.name, link:data.link, district:data.district,
+                munici:data.municipality ,region:data.region, time:data.uploaded};
+            resArr.push(currentHome);
+        });
+        if(home === 'homes'){
+            this.setState({responseHomes: resArr, responseVacation: []});
+        }
+        else {
+            this.setState({responseVacation: resArr, responseHomes: []});
+        }
+    }
+
+    createDataArray = async (path,query) => {  
+        let tempArr = [];
+        let response = '';
+     
+        response = await api.fetchDataQuery(path,query);
+        console.log(response);
+        
+        response.forEach((doc) => {
+            let data = doc.data();
+            console.log(data);
+            
+            let currentHome = {id: doc.id ,name:data.name, link:data.link, district:data.district,
+                munici:data.municipality ,region:data.region, time:data.uploaded};
+            tempArr.push(currentHome);
+        });
+        return tempArr;
     }
 
     uploadEntry = async () => 
@@ -96,6 +147,14 @@ class HomeManager extends Component {
         this.setState({name: '', link:'', district:'', munici:'', region:''});
     }
 
+    removeHome = (col,id) => {
+        api.deleteEntry(col,id);
+    }
+
+    changeLoading = () => {
+        this.setState({loading: false});
+    }
+
     render() {
         return (
         <div className='admin-container'>
@@ -118,10 +177,12 @@ class HomeManager extends Component {
                 <button onClick={this.uploadEntry}>Lägg upp</button><button onClick={this.clearFields}>Rensa fält</button>
             </div>
             <div className='admin-search'>
-                <button>Visa allt</button><button>Katthem</button><button>Pensionat</button>
+                <button onClick={() => {this.fetchData('CatHomes','homes');}}>Katthem</button><button onClick={() => {this.fetchData('CatBoardingHomes','vac');}}>Pensionat</button>
                 <p>Eller sök:</p>
-                <input type="text" id="query" name="query" onChange={this.onChange} value={this.state.title}/><button>Sök</button>
-                {this.state.response && <AdminResults homes={this.state.responseHomes} vacation={this.state.responseVacation}/>}
+                <input type="text" id="query" name="query" onChange={this.onChange} value={this.state.query}/><button onClick={this.getHomesByQuery}>Sök</button>
+                {this.state.loading && <div>Loading gif thingy</div>}
+                
+                    <AdminResults changeLoading={this.changeLoading} deleteEntry={this.removeHome} homes={this.state.responseHomes} vacation={this.state.responseVacation}/>
             </div>
             <button onClick={this.props.logOut} className='admin-logout'>Logga ut</button>
         </div>
