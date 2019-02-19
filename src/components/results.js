@@ -12,6 +12,9 @@ class Result extends Component {
         if(this.props.homes !== prevProps.homes){
             this.setState({Homes:[], msg: ''}, () => {this.createRenderArray(this.props.homes);})
         }
+        if(this.props.selected !== prevProps.selected){
+            this.setState({Homes: [], done:false});
+        }
     }
 
     createRenderArray = (dataArray) => {

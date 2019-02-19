@@ -6,9 +6,12 @@ class Map extends Component {
         reload: false,
     }
 
-    componentDidUpdate(prevProps){
+    componentDidUpdate(prevProps,prevState){
         if(this.props.selected !== prevProps.selected){
             this.setState({reload: true});
+        }
+        if(this.props.selected !== prevProps.selected && this.state.active === prevState.active){
+            this.props.setSelection(this.state.active);
         }     
     }
 

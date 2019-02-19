@@ -59,17 +59,17 @@ class HomeView extends Component {
         
         if(query.length > 0) {
             this.setState({loading: true, errormsg: ''});
-            const term = query.charAt(0).toUpperCase() + query.toLowerCase().slice(1);
+            const searchTerm = query.charAt(0).toUpperCase() + query.toLowerCase().slice(1);
             switch(this.state.selectedOption){
                 case 0:
-                let homesOnly = await this.createDataArray('string','CatHomes',term);
-                this.setState({response: homesOnly, query: '', type:'Katthem'});
+                let homesOnly = await this.createDataArray('string','CatHomes',searchTerm);
+                this.setState({response: homesOnly,type:'Katthem'});
                 //katthem
                 break;
                 case 1:
                 //pensionat
-                let vacsOnly = await this.createDataArray('string','CatBoardingHomes',term);
-                this.setState({response: vacsOnly, query: '', type: 'Kattpension'});
+                let vacsOnly = await this.createDataArray('string','CatBoardingHomes',searchTerm);
+                this.setState({response: vacsOnly,type: 'Kattpensionat'});
                 break;
                 default:
                 break;
@@ -104,7 +104,7 @@ class HomeView extends Component {
     render() {
         if(!this.props.isMobile) {
             return (
-                <div>
+                <div className='home-container'>
                     <About/>
                     <button onClick={this.toggleSearchType}>{this.state.mapSearch ? 'Söka via text' : 'Sök via karta' }</button>
                     <RadioButtons items={["Katthem", "Kattpensionat"]} onSelect={(index) => { this.setState({selectedOption: index}); }}/>

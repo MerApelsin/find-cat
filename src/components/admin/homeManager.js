@@ -59,10 +59,10 @@ class HomeManager extends Component {
         console.log('query admin')
         if(query.length > 0) {
             this.setState({loading: true, errormsg: ''});
-            const term = query.charAt(0).toUpperCase() + query.toLowerCase().slice(1);
+            const searchTerm = query.charAt(0).toUpperCase() + query.toLowerCase().slice(1);
             
-            let homesOnly = await this.createDataArray('CatHomes',term);
-            let vacsOnly = await this.createDataArray('CatBoardingHomes',term);
+            let homesOnly = await this.createDataArray('CatHomes',searchTerm);
+            let vacsOnly = await this.createDataArray('CatBoardingHomes',searchTerm);
             this.setState({responseHomes: homesOnly, responseVacation: vacsOnly, query: ''});
         }
     }
@@ -96,7 +96,6 @@ class HomeManager extends Component {
         
         response.forEach((doc) => {
             let data = doc.data();
-            console.log(data);
             
             let currentHome = {id: doc.id ,name:data.name, link:data.link, district:data.district,
                 munici:data.municipality ,region:data.region, time:data.uploaded};
@@ -107,14 +106,16 @@ class HomeManager extends Component {
 
     uploadEntry = async () => 
     {
+        const {region} = this.state;
+        const term = region.charAt(0).toUpperCase() + region.toLowerCase().slice(1);
         let d = new Date();
         let toUpload = {
             name: this.state.name,
             link: this.state.link,
             district: this.state.district,
             municipality: this.state.munici,
-            region: this.state.region,
-            regionCode: this.getKeyByValue(this.state.regionCodes,this.state.region),
+            region: term,
+            regionCode: this.getKeyByValue(this.state.regionCodes,term),
             searchTerms: [this.state.name,this.state.district, this.state.munici, this.state.region],
             uploaded: this.getTime(d)
         }
@@ -144,7 +145,7 @@ class HomeManager extends Component {
     }
 
     clearFields = () => {
-        this.setState({name: '', link:'', district:'', munici:'', region:''});
+        this.setState({name: '', link:'', district:'', munici:'', region:'',msg:''});
     }
 
     removeHome = (col,id) => {

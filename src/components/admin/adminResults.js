@@ -20,8 +20,12 @@ class AdminResult extends Component {
     }
 
     removeItem = (itemid,docid) => {
-        let newHomeArr = this.state.Homes;
-        let newVacArr = this.state.Vacs;
+        let newHomeArr = [...this.state.Homes];
+        let newVacArr = [...this.state.Vacs];
+        console.log('state home begin ',this.state.Homes);
+        
+        console.log('home clone ',newHomeArr);
+        
         if(itemid.includes('home')){
             let removeIndex = parseInt(itemid.slice(4));
             newHomeArr.splice(removeIndex,1);
@@ -35,10 +39,10 @@ class AdminResult extends Component {
             this.setState({Vacs: newVacArr});
         }
 
+        console.log('after remove ',this.state.Homes);
     }
 
     createRenderArray = (type,dataArray) => {
-        console.log(dataArray);
         
         let homeArr = [];
         let vacArr = [];
@@ -80,12 +84,16 @@ class AdminResult extends Component {
         <div>
             <p>{this.state.homeMsg}</p>
             {this.state.Homes.length > 0 &&
-                <h4>Katthem</h4> &&
-                this.state.Homes}
+                <div>
+                    <h4>Katthem</h4> 
+                    {this.state.Homes}
+                </div>}
             <p>{this.state.vacMsg}</p>
             {this.state.Vacs.length > 0 &&
-                <h4>Kattpensionat</h4> &&
-                this.state.Vacs}
+                <div>
+                    <h4>Kattpensionat</h4> 
+                    {this.state.Vacs}
+                </div>}
         </div>
     );
   }

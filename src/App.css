@@ -11,6 +11,15 @@
     margin: 0.3rem;
 }
 
+/* ---- home.js ---- */
+.home-container{
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+}
+
 /* ---- Map.js ---- */
 
 .map-container
@@ -26,6 +35,39 @@
 
 .map path:hover{
     fill: blue;
+}
+
+/* ---- about.js ---- */
+
+.about-container{
+    display: flex;
+    flex-direction: column;
+    height: 12rem;
+    margin-top: 1rem;
+    align-items: center;
+}
+
+.about-container-empty{
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.about-btn{
+    text-align: center;
+    width: 7rem;
+    height: auto;
+    flex-grow: 0;
+}
+
+.about-container img{
+    height: 10rem;
+    width: auto;
+    padding-left: 3rem;
+}
+
+.about-text{
+    display: flex;
+    flex-direction: column;
 }
 
 /* ---- homeManager.js ---- */
