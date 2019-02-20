@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './App.css';
-import throttle from 'lodash.throttle'
 
 import AdminView from './components/views/admin.js';
 import HomeView from './components/views/home.js';
@@ -23,7 +22,7 @@ class App extends Component {
   }
 
   throttledHandleWindowResize = () => { 
-    setTimeout(()=>{ this.setState({isMobile:  window.innerWidth < 550})}, 500);
+    setTimeout(()=>{ this.setState({isMobile:  window.innerWidth < 650})}, 500);
   }
 
   toggleView = () => {
@@ -32,7 +31,7 @@ class App extends Component {
   }
 
   renderButton = (value) => {
-     return (<button onClick={this.toggleView}>{value}</button>);
+     return (<button onClick={this.toggleView} className='admin-btn admin-btn-colors'>{value}</button>);
   }
 
   render() {

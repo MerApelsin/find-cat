@@ -36,7 +36,7 @@ class Result extends Component {
     render() {
         return (
         <div>
-            {this.state.done && <h2>{this.props.type}</h2>}
+            {this.state.done && <h2 className='title-font' style={{padding:0,margin:0}}>{this.props.type}</h2>}
             {this.state.msg}
             {this.state.Homes.length > 0 &&
                 this.state.Homes}

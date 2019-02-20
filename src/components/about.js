@@ -18,14 +18,14 @@ class About extends Component {
       if(!visible){
         return (
             <div className='about-container-empty'>
-                <button onClick={this.toggleVisability}>Läs om sidan</button> 
+                <button className='normal-btn' onClick={this.toggleVisability}>Läs om sidan</button> 
             </div>
           );
       }
       else{
         return (
             <div className='about-container'>
-                <button onClick={this.toggleVisability} className='about-btn'>Dölj om sidan</button>
+                <button onClick={this.toggleVisability} className='about-btn normal-btn'>Dölj om sidan</button>
                 <div style={{display:'flex',flexDirection:'row'}}>
                     <div className='about-text'>
                         

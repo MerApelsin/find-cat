@@ -5,6 +5,7 @@ import About from '../about.js';
 import api from '../../firebase.js'
 import Map from '../map.js';
 import Results from '../results.js'
+import loadingsvg from '../assets/loading.svg';
 
 class HomeView extends Component {
 
@@ -102,26 +103,39 @@ class HomeView extends Component {
     }
 
     render() {
+        let mapStyle = '';
+        let resultStyle = '';
+        if(this.state.mapSearch){
+            mapStyle = 'next-to-map';
+            resultStyle = 'home-result-map'
+        }
+        else {
+            mapStyle = '';
+            resultStyle = 'home-result';
+        }
+
         if(!this.props.isMobile) {
             return (
                 <div className='home-container'>
                     <About/>
-                    <button onClick={this.toggleSearchType}>{this.state.mapSearch ? 'Söka via text' : 'Sök via karta' }</button>
+                    <button className='normal-btn' onClick={this.toggleSearchType}>{this.state.mapSearch ? 'Söka via text' : 'Sök via karta' }</button>
                     <RadioButtons items={["Katthem", "Kattpensionat"]} onSelect={(index) => { this.setState({selectedOption: index}); }}/>
                     {!this.state.mapSearch && <div>
                         <p>{this.state.errormsg}</p>
                         <div style={{"display": "flex", "flexDirection":"row","justifyContent": "center"}}>
                             
-                            <input type="text" id="query" name="query" onChange={this.onChange} value={this.state.query} /><button onClick={this.getHomesByQuery}>sök</button><br/>
+                            <input className='text-input' type="text" id="query" name="query" onChange={this.onChange} value={this.state.query} /><button className='query-btn' onClick={this.getHomesByQuery}>Sök</button><br/>
                         </div>
                     </div>}
-                    {this.state.mapSearch && <div>
-                        <Map selected={this.state.selectedOption} setSelection={this.setMapSelection}/>
-                    </div>}
-                    <div>
-                        <h3>Resultat</h3>
-                        {this.state.loading && <div>Loading gif thingy</div>}
-                        {(this.state.responseHomes !== '' || this.state.responseVacation !== '' ) && <Results type={this.state.type} selected={this.state.selectedOption} changeLoading={this.changeLoading} homes={this.state.response}/>}
+                    <div className={mapStyle}>
+                        {this.state.mapSearch && 
+                            <Map selected={this.state.selectedOption} setSelection={this.setMapSelection}/>
+                        }
+                        <div className={resultStyle}>
+                            <h1 className='title-font'>Resultat</h1>
+                            {this.state.loading && <img className='loading-img' alt='loading' src={loadingsvg}/>}
+                            {(this.state.responseHomes !== '' || this.state.responseVacation !== '' ) && <Results type={this.state.type} selected={this.state.selectedOption} changeLoading={this.changeLoading} homes={this.state.response}/>}
+                        </div>
                     </div>
                 </div>);
         }

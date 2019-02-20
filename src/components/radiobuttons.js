@@ -21,6 +21,33 @@ class Radiobuttons extends Component{
 
             return (
             <div className='radioButton' key={'radio' + a}>
+                <label className='label-container'>
+                    <input
+                        type="radio"
+                        name="post-Options"
+                        value={a}
+                        checked={this.state.selectedIndex === a}
+                        onChange={this.handleOptionChange} />
+                    {item}
+                    <span className='checkmark'></span>
+                </label>
+            </div>)
+        })
+        return (
+            <div>
+                <form style={{marginTop:'0.5rem'}}>
+                    {radiobtns}
+                </form>
+            </div>
+        );
+      }
+    }
+
+export default Radiobuttons;
+
+/*
+ return (
+            <div className='radioButton' key={'radio' + a}>
                 <label>
                     <input
                         type="radio"
@@ -32,15 +59,4 @@ class Radiobuttons extends Component{
                     {item}
                 </label>
             </div>)
-        })
-        return (
-            <div>
-                <form>
-                    {radiobtns}
-                </form>
-            </div>
-        );
-      }
-    }
-
-export default Radiobuttons;
+*/

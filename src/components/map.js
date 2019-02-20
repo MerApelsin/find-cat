@@ -10,7 +10,7 @@ class Map extends Component {
         if(this.props.selected !== prevProps.selected){
             this.setState({reload: true});
         }
-        if(this.props.selected !== prevProps.selected && this.state.active === prevState.active){
+        if(this.props.selected !== prevProps.selected && this.state.active === prevState.active && this.state.active !== ''){
             this.props.setSelection(this.state.active);
         }     
     }
@@ -19,7 +19,7 @@ class Map extends Component {
         if (this.state.active === '')
         {
             let element = document.getElementById(id);
-            element.style.fill = 'green';
+            element.style.fill = '#024479';
             this.setState({active:id}, () => {this.props.setSelection(this.state.active)});
         }
 
@@ -31,7 +31,7 @@ class Map extends Component {
             let prev = document.getElementById(this.state.active);
             prev.style.fill = '';
             let element = document.getElementById(id);
-            element.style.fill = 'green';
+            element.style.fill = '#024479';
             this.setState({active:id}, () => {this.props.setSelection(this.state.active)});
         }   
     }
