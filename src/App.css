@@ -13,11 +13,36 @@ font-family: 'Kalam', cursive;
     flex-direction: column;
     align-items: center;
     width: 100%;
+    height: 100vh;
+    background-color: #f5f5f5
+}
+
+.app-header{
+    background-color: #f5f5f5;
+    width: 100%;
+    height: 6rem;
+}
+
+.app-block{
+    width: 75%;
+    text-align: center;
+    background-image: url('./components/assets/catbanner.png');
+    background-color: #edf2f6;
+    background-repeat: no-repeat;
+    background-position: center; 
+    background-size: contain;
+    height: 100%;
+    float: initial;
+    margin: auto;
+    margin-bottom: 0.5rem;
 }
 
 .admin-btn{
-    align-self: flex-end;
+    float:right;
+    margin-top: 1%;
+    margin-right: 1%;
 }
+
 .admin-btn-colors {
     background: #7DF68A;
     background-image: -webkit-linear-gradient(top, #7DF68A, #1C8C0B);
@@ -57,13 +82,61 @@ font-family: 'Kalam', cursive;
     margin: 0.3rem;
 }
 
+/* ---- login.js ---- */
+.auth-container{
+    margin-top:1rem;
+    padding: 1rem;
+    border: 1px solid #024479;
+    border-radius: 4px;
+    text-align: center;
+    background-color: aliceblue;
+}
+.auth-container h2{
+    margin: 0;
+    padding: 0;
+    font-family: 'Kalam', cursive;
+}
+
+.auth-container button{
+    margin-top:0.5rem;
+}
+
+.login-btn{
+    background: #0a5f06;
+    background-image: -webkit-linear-gradient(top, #0a5f06, #06b989);
+    background-image: -moz-linear-gradient(top, #0a5f06, #06b989);
+    background-image: -ms-linear-gradient(top, #0a5f06, #06b989);
+    background-image: -o-linear-gradient(top, #0a5f06, #06b989);
+    background-image: linear-gradient(to bottom, #0a5f06, #06b989);
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 15px;
+    border: none;
+    color: #FFFFFF;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 100;
+    padding: 8px;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+}
+
+/* använder även 'admin-text-input'*/
+
 /* ---- home.js ---- */
 .home-container{
-    width: 100%;
+    width: 75%;
     display: flex;
     flex-direction: column;
     align-content: center;
     align-items: center;
+    height: 100%;
+    background-color: white;
+}
+.home-buttons{
+    display:flex;
+    flex-direction: row
 }
 
 .title-font{
@@ -146,7 +219,6 @@ font-family: 'Kalam', cursive;
 
 .about-btn{
     text-align: center;
-    width: 7rem;
     height: auto;
     flex-grow: 0;
 }
@@ -170,16 +242,38 @@ font-family: 'Kalam', cursive;
     align-items: baseline;
 }
 
+.admin-container label p{
+    font-family: 'Open Sans', sans-serif;
+}
+
 .admin-upload{
     display: flex;
     flex-direction: column;
     margin-left: 2rem;
-    margin-right: 2rem;
+    margin-right: 4rem;
+}
+
+.admin-upload form{
+    margin-top: 0.5rem;
+}
+.admin-upload h3{
+    font-family: 'Kalam', cursive;
+    padding: 0;
+    margin: 0.2rem 0;
 }
 
 .admin-search{
     align-content: center;
 }
+
+.admin-search p{
+    margin-top: 1.3rem;
+}
+.admin-loading{
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
 .admin-search button{
     margin-right: 0.2rem;
 }
@@ -188,14 +282,106 @@ font-family: 'Kalam', cursive;
     width: auto;
     flex-grow: 0;
     margin-left: 4rem;
+    background: #F6F6F6;
+    background-image: -webkit-linear-gradient(top, #ff8b02, #8f3030);
+    background-image: -moz-linear-gradient(top, #ff8b02, #8f3030);
+    background-image: -ms-linear-gradient(top, #ff8b02, #8f3030);
+    background-image: -o-linear-gradient(top, #ff8b02, #8f3030);
+    background-image: linear-gradient(to bottom, #ff8b02, #8f3030);
+    -webkit-border-radius: 9px;
+    -moz-border-radius: 9px;
+    border-radius: 9px;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 100;
+    padding: 4px 10px 4px 10px;
+    border: none;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    margin: 0.2rem;
 }
 
+.admin-text-input {
+    display: inline-block;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    padding: 7px;
+    border: 1px solid #b7b7b7;
+    -webkit-border-radius: 3px;
+    font: normal 16px/normal "Times New Roman", Times, serif;
+    color: rgb(0, 79, 198);
+    -o-text-overflow: clip;
+    text-overflow: clip;
+    background: rgba(252,252,252,1);
+    -webkit-box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+    box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.66) ;
+    -webkit-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+    -moz-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+    -o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+    transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+    width: 92%;
+    border-radius: 9px;
+  }
+
+
+/* ---- adminResCard.js ---- */
+.admin-result-card{
+    border: 1.5px solid #024479;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    padding: 0 0 0.5rem 0;
+}
+
+.admin-card-title{
+    background-color: aliceblue;
+    border-bottom: 1px solid #024479;
+    padding: 0.5rem 0.3rem;
+    margin-left: 0.01rem;
+    border-radius: 0.5rem 0.5rem 0rem 0rem;
+}
+
+.admin-result-card h3{
+    display: inline;
+    color: #024479; 
+}
+.admin-remove-btn{
+    float:right;
+    background: #F6F6F6;
+    background-image: -webkit-linear-gradient(top, #630317, rgb(243, 33, 96));
+    background-image: -moz-linear-gradient(top, #630317, rgb(243, 33, 96));
+    background-image: -ms-linear-gradient(top, #630317, rgb(243, 33, 96));
+    background-image: -o-linear-gradient(top, #630317, rgb(243, 33, 96));
+    background-image: linear-gradient(to bottom, #630317, rgb(243, 33, 96));
+    -webkit-border-radius: 9px;
+    -moz-border-radius: 9px;
+    border-radius: 9px;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 100;
+    border: none;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    margin: 0.2rem;
+}
+
+.admin-result-card p{
+    display: inline;
+    padding: 0.2rem 0.5rem;
+    margin: 0;
+    font-family: 'Open Sans', sans-serif;
+    font-size: small;
+}
 /* ----- resultCard.js ----- */
 
 .result-card{
     border: 1.5px solid #024479;
     padding-bottom: 0.5rem;
-    margin-bottom: 0.2rem;
+    margin-bottom: 1rem;
     border-radius: 6px;
 }
 
@@ -224,6 +410,7 @@ font-family: 'Kalam', cursive;
     padding:0;
     margin: 0;
     font-family: 'Open Sans', sans-serif;
+    font-size: small;
 }
 
 /* ---- GENERAL ---- */
@@ -377,4 +564,18 @@ font-family: 'Kalam', cursive;
   /* ---- MOBILE ---- */
   .mobile-btn{
     margin-top: 1rem;
+  }
+
+  .app-block-mobile{
+    width: 75%;
+    text-align: center;
+    background-image: url('./components/assets/catbanner_small.png');
+    background-color: #edf2f6;
+    background-repeat: no-repeat;
+    background-position: center; 
+    background-size: contain;
+    height: 100%;
+    float: initial;
+    margin: auto;
+    margin-bottom: 0.5rem;
   }

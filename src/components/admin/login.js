@@ -43,15 +43,15 @@ class Login extends Component {
         return (
         <div>
             {!this.state.authUser && <div className='auth-container'>
-                    <h3>Admin inlogg</h3>
-                    <h4>{this.state.errorMsg}</h4>
+                    <h2>Admin inlogg</h2>
+                    {this.state.errorMsg}
                     <form>
-                        <label htmlFor=''>Användarnamn</label><br/>
-                        <input type='text' id="username" name="username" onChange={this.onChange} value={this.state.username}/><br/>
-                        <label htmlFor=''>Lösenord</label><br/>
-                        <input type='password' id='password' name='password' onChange={this.onChange} value={this.state.password}/><br/>
+                        <label htmlFor='username'>Användarnamn</label><br/>
+                        <input className='admin-text-input' type='text' id="username" name="username" onChange={this.onChange} value={this.state.username}/><br/>
+                        <label htmlFor='password'>Lösenord</label><br/>
+                        <input className='admin-text-input' type='password' id='password' name='password' onChange={this.onChange} value={this.state.password}/><br/>
                     </form>
-                    <button onClick={this.loginUser}>Login</button>
+                    <button className='login-btn' onClick={this.loginUser}>Login</button>
                 </div>}
             {this.state.authUser && <HomeManager logOut={this.logOutUser}/>}
         </div>

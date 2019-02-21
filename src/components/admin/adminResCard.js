@@ -5,11 +5,13 @@ class ResultCard extends React.Component {
         const {name, url, time ,docid,itemid} = this.props;
         
       return (
-        <div className='result-card'>
-            <button onClick={() => {this.props.remove(itemid,docid)}}>X</button>
-            <h2>{name}</h2>
-            <p>uppladdad den {time}</p>
-            <h3>Länk till hem: <a href={url}>här</a></h3>
+        <div className='admin-result-card'>
+            <div className='admin-card-title'>
+                <h3>{name}</h3>
+                <button className='admin-remove-btn' onClick={() => {this.props.remove(itemid,docid)}}>X</button>
+            </div>
+            <p>Uppladdad {time}</p><br/>
+            <p>Länk: <a href={url}>här</a></p>
         </div>
       );
     }

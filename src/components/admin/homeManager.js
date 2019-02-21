@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import RadioButtons from '../radiobuttons.js';
 import api from '../../firebase.js';
 import AdminResults from './adminResults.js';
+import loadingsvg from '../assets/loading.svg'
+
 
 class HomeManager extends Component {
     state = {
@@ -160,28 +162,30 @@ class HomeManager extends Component {
         return (
         <div className='admin-container'>
             <div className='admin-upload'>
-                <h4>Lägg upp ett:</h4>
+                <h3>Lägg upp ett:</h3>
                 <RadioButtons items={['Katthem', 'Kattpensionat']} onSelect={(index) => { this.setState({selectedOption: index}); }}/>
                 <form>
                     <label htmlFor='name'>Hemmets namn:</label><br/>
-                    <input type='text' id='name' name='name' onChange={this.onChange} value={this.state.name} /><br/>
+                    <input className='admin-text-input' type='text' id='name' name='name' onChange={this.onChange} value={this.state.name} /><br/>
                     <label htmlFor='name'>Länk:</label><br/>
-                    <input type='text' id='link' name='link' onChange={this.onChange} value={this.state.link} /><br/>
+                    <input className='admin-text-input' type='text' id='link' name='link' onChange={this.onChange} value={this.state.link} /><br/>
                     <label htmlFor='name'>Ort:</label><br/>
-                    <input type='text' id='district' name='district' onChange={this.onChange} value={this.state.district} /><br/>
+                    <input className='admin-text-input' type='text' id='district' name='district' onChange={this.onChange} value={this.state.district} /><br/>
                     <label htmlFor='name'>Kommun:</label><br/>
-                    <input type='text' id='munici' name='munici' onChange={this.onChange} value={this.state.munici} /><br/>
+                    <input className='admin-text-input' type='text' id='munici' name='munici' onChange={this.onChange} value={this.state.munici} /><br/>
                     <label htmlFor='name'>Län:</label><br/>
-                    <input type='text' id='region' name='region' onChange={this.onChange} value={this.state.region} /><br/>
+                    <input className='admin-text-input' type='text' id='region' name='region' onChange={this.onChange} value={this.state.region} /><br/>
                 </form>
                 <p>{this.state.msg}</p>
-                <button onClick={this.uploadEntry}>Lägg upp</button><button onClick={this.clearFields}>Rensa fält</button>
+                <button className='normal-btn' onClick={this.uploadEntry}>Lägg upp</button><button className='normal-btn' onClick={this.clearFields}>Rensa fält</button>
             </div>
             <div className='admin-search'>
-                <button onClick={() => {this.fetchData('CatHomes','homes');}}>Katthem</button><button onClick={() => {this.fetchData('CatBoardingHomes','vac');}}>Pensionat</button>
+                <button className='normal-btn' onClick={() => {this.fetchData('CatHomes','homes');}}>Katthem</button><button className='normal-btn' onClick={() => {this.fetchData('CatBoardingHomes','vac');}}>Pensionat</button>
                 <p>Eller sök:</p>
-                <input type="text" id="query" name="query" onChange={this.onChange} value={this.state.query}/><button onClick={this.getHomesByQuery}>Sök</button>
-                {this.state.loading && <div>Loading gif thingy</div>}
+                <div style={{"display": "flex", "flexDirection":"row","justifyContent": "center"}}>
+                    <input type="text" id="query" name="query" className='text-input' onChange={this.onChange} value={this.state.query}/><button className='query-btn' onClick={this.getHomesByQuery}>Sök</button>
+                </div>
+                {this.state.loading && <div className='admin-loading'><img className='loading-img' alt='loading' src={loadingsvg}/></div>}
                 
                     <AdminResults changeLoading={this.changeLoading} deleteEntry={this.removeHome} homes={this.state.responseHomes} vacation={this.state.responseVacation}/>
             </div>

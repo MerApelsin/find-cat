@@ -22,7 +22,7 @@ class App extends Component {
   }
 
   throttledHandleWindowResize = () => { 
-    setTimeout(()=>{ this.setState({isMobile:  window.innerWidth < 650})}, 500);
+    setTimeout(()=>{ this.setState({isMobile:  window.innerWidth < 700})}, 500);
   }
 
   toggleView = () => {
@@ -36,11 +36,22 @@ class App extends Component {
 
   render() {
       const {adminPage} = this.state;
+      let headerclass = '';
+      this.state.isMobile ? headerclass = 'app-block-mobile' : headerclass = 'app-block';
+
+      
       if(!adminPage){
         return (
-            <div className='app-container'>
-                {this.renderButton('Logga in')}
-                <HomeView isMobile={this.state.isMobile}/>
+            <div>
+                <div className='app-header'>
+                        
+                        <div className={headerclass}>
+                        {this.renderButton('Logga in')}
+                        </div>
+                </div> 
+                <div className='app-container'> 
+                    <HomeView isMobile={this.state.isMobile}/>
+                </div>
             </div>
         );
       }
