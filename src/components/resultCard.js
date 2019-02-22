@@ -10,7 +10,7 @@ class ResultCard extends React.Component {
             <p className='category'>Ort: </p><p>{district}</p><br/>
             <p className='category'>Kommun: </p><p>{munici}</p><br/>
             <p className='category'>Län: </p><p>{region}</p><br/>
-            <p className='category'>Länk till hem: </p><p><a href={url} rel="noopener noreferrer" target="_blank">här</a></p><br/>
+            <p className='category'>Länk till hem: </p><p><a href={url} title={name} rel="noopener noreferrer" target="_blank">här</a></p><br/>
             <p className='time'>uppladdad den {time}</p>
         </div>
       );

@@ -12,19 +12,16 @@ class AdminResult extends Component {
 
     componentDidUpdate(prevProps){
         if(this.props.homes !== prevProps.homes && this.props.homes.length > 0){
-            this.setState({Homes:[], msg: ''}, () => {this.createRenderArray('home',this.props.homes);})
+            this.setState({Homes:[], msg: '', Vacs:[]}, () => {this.createRenderArray('home',this.props.homes);})
         }
         if(this.props.vacation !== prevProps.vacation && this.props.vacation.length > 0){
-            this.setState({Vacs:[], msg: ''}, () => {this.createRenderArray('vacs',this.props.vacation);})
+            this.setState({Vacs:[], msg: '', Homes:[]}, () => {this.createRenderArray('vacs',this.props.vacation);})
         }
     }
 
     removeItem = (itemid,docid) => {
         let newHomeArr = [...this.state.Homes];
         let newVacArr = [...this.state.Vacs];
-        console.log('state home begin ',this.state.Homes);
-        
-        console.log('home clone ',newHomeArr);
         
         if(itemid.includes('home')){
             let removeIndex = parseInt(itemid.slice(4));
@@ -43,6 +40,7 @@ class AdminResult extends Component {
     }
 
     createRenderArray = (type,dataArray) => {
+        console.log(dataArray);
         
         let homeArr = [];
         let vacArr = [];
@@ -80,19 +78,21 @@ class AdminResult extends Component {
     }
 
     render() {
+        const {Homes,Vacs,homeMsg,vacMsg} = this.state;
         return (
         <div>
-            <p>{this.state.homeMsg}</p>
-            {this.state.Homes.length > 0 &&
+            {(Homes.length > 0 || Vacs.length > 0) &&<button className='normal-btn' onClick={() => {this.setState({Homes:[],Vacs:[]})}}>Rensa resultat</button>}
+            <p>{homeMsg}</p>
+            {Homes.length > 0 &&
                 <div>
                     <h4>Katthem</h4> 
-                    {this.state.Homes}
+                    {Homes}
                 </div>}
-            <p>{this.state.vacMsg}</p>
-            {this.state.Vacs.length > 0 &&
+            <p>{vacMsg}</p>
+            {Vacs.length > 0 &&
                 <div>
                     <h4>Kattpensionat</h4> 
-                    {this.state.Vacs}
+                    {Vacs}
                 </div>}
         </div>
     );

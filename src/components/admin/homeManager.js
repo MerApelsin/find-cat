@@ -18,29 +18,29 @@ class HomeManager extends Component {
         responseHomes: '',
         responseVacation: '',
         loading: false,
-        regionCodes: {SE_BD: 'Norrbotten',
-            SE_AC: 'Västerbotten',
-            SE_Z: 'Jämtland',
-            SE_U: 'Västmanland',
-            SE_X: 'Gävleborg',
-            SE_W: 'Dalarna',
-            SE_Y: 'Västnorrland',
-            SE_C: 'Uppsala',
-            SE_AB: 'Stockholm',
-            SE_D: 'Södermanland',
-            SE_T: 'Örebro',
-            SE_S: 'Värmland',
-            SE_O: 'Västra Götaland',
-            SE_E: 'Östergötland',
-            SE_F: 'Jönköping',
-            SE_H: 'Kalmar',
-            SE_N: 'Halland',
-            SE_G: 'Kronoberg',
-            SE_I: 'Gotland',
-            SE_K: 'Blekinge',
-            SE_M: 'Skåne'}
+        regionCodes: {SE_BD: 'norrbotten',
+            SE_AC: 'västerbotten',
+            SE_Z: 'jämtland',
+            SE_U: 'västmanland',
+            SE_X: 'gävleborg',
+            SE_W: 'dalarna',
+            SE_Y: 'västnorrland',
+            SE_C: 'uppsala',
+            SE_AB: 'stockholm',
+            SE_D: 'södermanland',
+            SE_T: 'örebro',
+            SE_S: 'värmland',
+            SE_O: 'västra götaland',
+            SE_E: 'östergötland',
+            SE_F: 'jönköping',
+            SE_H: 'kalmar',
+            SE_N: 'halland',
+            SE_G: 'kronoberg',
+            SE_I: 'gotland',
+            SE_K: 'blekinge',
+            SE_M: 'skåne'}
     }
-
+    
     onChange = (e) => { this.setState({[e.target.name]: e.target.value})}
 
     getKeyByValue = (object, value) => {
@@ -58,19 +58,23 @@ class HomeManager extends Component {
 
     getHomesByQuery = async () => {
         const {query} = this.state;
-        console.log('query admin')
         if(query.length > 0) {
             this.setState({loading: true, errormsg: ''});
-            const searchTerm = query.charAt(0).toUpperCase() + query.toLowerCase().slice(1);
+            const searchTerm = query.toLowerCase();
             
             let homesOnly = await this.createDataArray('CatHomes',searchTerm);
             let vacsOnly = await this.createDataArray('CatBoardingHomes',searchTerm);
-            this.setState({responseHomes: homesOnly, responseVacation: vacsOnly, query: ''});
+            if(homesOnly.length < 0 && vacsOnly.length < 0){
+                this.setState({loading: false, errormsg: 'Inga resultat'});
+            }
+            else{
+                this.setState({responseHomes: homesOnly, responseVacation: vacsOnly, query: ''});
+            }
+            
         }
     }
 
     fetchData = async(col, home) => {
-        console.log('all admin');
         this.setState({loading: true, errormsg: ''});
         let res = await api.fetchAllFromCol(col);
         let resArr = [];
@@ -94,7 +98,6 @@ class HomeManager extends Component {
         let response = '';
      
         response = await api.fetchDataQuery(path,query);
-        console.log(response);
         
         response.forEach((doc) => {
             let data = doc.data();
@@ -109,16 +112,17 @@ class HomeManager extends Component {
     uploadEntry = async () => 
     {
         const {region} = this.state;
-        const term = region.charAt(0).toUpperCase() + region.toLowerCase().slice(1);
+        const term = region.toLowerCase();
+        
         let d = new Date();
         let toUpload = {
-            name: this.state.name,
-            link: this.state.link,
-            district: this.state.district,
-            municipality: this.state.munici,
+            name: this.state.name.toLowerCase(),
+            link: this.state.linktoLowerCase(),
+            district: this.state.district.toLowerCase(),
+            municipality: this.state.munici.toLowerCase(),
             region: term,
             regionCode: this.getKeyByValue(this.state.regionCodes,term),
-            searchTerms: [this.state.name,this.state.district, this.state.munici, this.state.region],
+            searchTerms: [this.state.name.toLowerCase(),this.state.district.toLowerCase(), this.state.munici.toLowerCase(), this.state.region.toLowerCase()],
             uploaded: this.getTime(d)
         }
         if(this.state.selectedOption === 0) //katthem
@@ -180,13 +184,14 @@ class HomeManager extends Component {
                 <button className='normal-btn' onClick={this.uploadEntry}>Lägg upp</button><button className='normal-btn' onClick={this.clearFields}>Rensa fält</button>
             </div>
             <div className='admin-search'>
+                <h3>Hämta alla:</h3>
                 <button className='normal-btn' onClick={() => {this.fetchData('CatHomes','homes');}}>Katthem</button><button className='normal-btn' onClick={() => {this.fetchData('CatBoardingHomes','vac');}}>Pensionat</button>
-                <p>Eller sök:</p>
-                <div style={{"display": "flex", "flexDirection":"row","justifyContent": "center"}}>
+                <h3>Eller sök:</h3>
+                <div style={{"display": "flex", "flexDirection":"row"}}>
                     <input type="text" id="query" name="query" className='text-input' onChange={this.onChange} value={this.state.query}/><button className='query-btn' onClick={this.getHomesByQuery}>Sök</button>
                 </div>
                 {this.state.loading && <div className='admin-loading'><img className='loading-img' alt='loading' src={loadingsvg}/></div>}
-                
+                    {this.state.errormsg}
                     <AdminResults changeLoading={this.changeLoading} deleteEntry={this.removeHome} homes={this.state.responseHomes} vacation={this.state.responseVacation}/>
             </div>
             <button onClick={this.props.logOut} className='admin-logout'>Logga ut</button>

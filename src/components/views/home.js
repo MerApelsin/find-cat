@@ -35,7 +35,7 @@ class HomeView extends Component {
 
     toggleSearchType = () => {
         let current = this.state.mapSearch;
-        current ? this.setState({mapSearch: false}) : this.setState({mapSearch: true});
+        current ? this.setState({mapSearch: false, response: ''}) : this.setState({mapSearch: true,response: ''});
     }
 
     toggleAbout = () => {
@@ -72,7 +72,7 @@ class HomeView extends Component {
         
         if(query.length > 0) {
             this.setState({loading: true, errormsg: ''});
-            const searchTerm = query.charAt(0).toUpperCase() + query.toLowerCase().slice(1);
+            const searchTerm = query.toLowerCase();
             switch(this.state.selectedOption){
                 case 0:
                 let homesOnly = await this.createDataArray('string','CatHomes',searchTerm);
@@ -115,10 +115,12 @@ class HomeView extends Component {
     }
 
     render() {
+        const {showAbout, mapSearch, errormsg, loading} = this.state;
         let mapStyle = '';
         let resultStyle = '';
+
         if(!this.props.isMobile){
-            if(this.state.mapSearch){
+            if(mapSearch){
                 mapStyle = 'next-to-map';
                 resultStyle = 'home-result-map'
             }
@@ -133,29 +135,29 @@ class HomeView extends Component {
         }
 
         if(!this.props.isMobile) {
-            if(!this.state.showAbout)
+            if(!showAbout)
             {
                 return (
                     <div className='home-container'>
                         <div className='home-buttons'>
-                            {!this.state.showAbout && <button className='normal-btn' onClick={this.toggleAbout}>Läs om sidan</button> }
-                            <button className='normal-btn' onClick={this.toggleSearchType}>{this.state.mapSearch ? 'Sök via text' : 'Sök via karta' }</button>
+                            {!showAbout && <button className='normal-btn' onClick={this.toggleAbout}>Läs om sidan</button> }
+                            <button className='normal-btn' onClick={this.toggleSearchType}>{mapSearch ? 'Sök via text' : 'Sök via karta' }</button>
                         </div>
                         <RadioButtons items={["Katthem", "Kattpensionat"]} onSelect={(index) => { this.setState({selectedOption: index}); }}/>
-                        {!this.state.mapSearch && <div>
-                            <p>{this.state.errormsg}</p>
+                        {!mapSearch && <div>
+                            <p>{errormsg}</p>
                             <div style={{"display": "flex", "flexDirection":"row","justifyContent": "center"}}>
                                 
                                 <input className='text-input' type="text" id="query" name="query" onChange={this.onChange} value={this.state.query} /><button className='query-btn' onClick={this.getHomesByQuery}>Sök</button><br/>
                             </div>
                         </div>}
                         <div className={mapStyle}>
-                            {this.state.mapSearch && 
+                            {mapSearch && 
                                 <Map selected={this.state.selectedOption} setSelection={this.setMapSelection}/>
                             }
                             <div className={resultStyle}>
                                 <h1 className='title-font'>Resultat</h1>
-                                {this.state.loading && <img className='loading-img' alt='loading' src={loadingsvg}/>}
+                                {loading && <img className='loading-img' alt='loading' src={loadingsvg}/>}
                                 {(this.state.responseHomes !== '' || this.state.responseVacation !== '' ) && <Results type={this.state.type} selected={this.state.selectedOption} changeLoading={this.changeLoading} homes={this.state.response}/>}
                             </div>
                         </div>
@@ -171,29 +173,29 @@ class HomeView extends Component {
             
         }
         else{
-            if(!this.state.showAbout){
+            if(!showAbout){
                 return(
                 <div className='home-container'>
                     <div className='home-buttons'>
-                        {!this.state.showAbout && <button className='normal-btn' onClick={this.toggleAbout}>Läs om sidan</button> }
-                        <button className='normal-btn' onClick={this.toggleSearchType}>{this.state.mapSearch ? 'Sök via text' : 'Sök via karta' }</button>
+                        {!showAbout && <button className='normal-btn' onClick={this.toggleAbout}>Läs om sidan</button> }
+                        <button className='normal-btn' onClick={this.toggleSearchType}>{mapSearch ? 'Sök via text' : 'Sök via karta' }</button>
                     </div>
                     <RadioButtons items={["Katthem", "Kattpensionat"]} onSelect={(index) => { this.setState({selectedOption: index}); }}/>
-                    {!this.state.mapSearch && <div>
-                        <p>{this.state.errormsg}</p>
+                    {!mapSearch && <div>
+                        <p>{errormsg}</p>
                         <div style={{"display": "flex", "flexDirection":"row","justifyContent": "center"}}>
                             
                             <input className='text-input' type="text" id="query" name="query" onChange={this.onChange} value={this.state.query} /><button className='query-btn' onClick={this.getHomesByQuery}>Sök</button><br/>
                         </div>
                     </div>}
                     <div className={mapStyle}>
-                        {(this.state.mapSearch && !this.state.mobileHide) &&
+                        {(mapSearch && !this.state.mobileHide) &&
                             <Map selected={this.state.selectedOption} setSelection={this.setMapSelection}/>
                         }
                         <div className={resultStyle}>
-                        {(this.state.mobileHide && this.state.mapSearch)&& <button className='normal-btn mobile-btn' onClick={() => {this.setState({mobileHide: false})}}>Visa karta</button>}
+                        {(this.state.mobileHide && mapSearch)&& <button className='normal-btn mobile-btn' onClick={() => {this.setState({mobileHide: false})}}>Visa karta</button>}
                             <h1 className='title-font'>Resultat</h1>
-                            {this.state.loading && <img className='loading-img' alt='loading' src={loadingsvg}/>}
+                            {loading && <img className='loading-img' alt='loading' src={loadingsvg}/>}
                             {(this.state.responseHomes !== '' || this.state.responseVacation !== '' ) && <Results type={this.state.type} selected={this.state.selectedOption} changeLoading={this.changeLoading} homes={this.state.response}/>}
                         </div>
                     </div>
