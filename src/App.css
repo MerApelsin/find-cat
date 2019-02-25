@@ -107,12 +107,13 @@ html{
 
 .app-block{
     width: 75%;
+    max-width: 750px;
     text-align: center;
     background-image: url('./components/assets/catbanner.png');
     background-color: #edf2f6;
     background-repeat: no-repeat;
     background-position: center; 
-    background-size: contain;
+    background-size: cover;
     height: 100%;
     float: initial;
     margin: auto;
@@ -210,6 +211,7 @@ html{
 .home-container{
     width: 75%;
     display: flex;
+    max-width: 750px;
     flex-direction: column;
     align-content: center;
     align-items: center;
@@ -220,8 +222,6 @@ html{
     display:flex;
     flex-direction: row
 }
-
-
 
 .next-to-map{
     display: flex;
@@ -272,6 +272,7 @@ html{
 {
     padding-top: 2rem;
     margin-right: 2%;
+    text-align: center;
 }
 .map {
     fill: #99b4fe;
@@ -605,7 +606,7 @@ html{
     background-color: #edf2f6;
     background-repeat: no-repeat;
     background-position: center; 
-    background-size: contain;
+    background-size: cover;
     height: 100%;
     float: initial;
     margin: auto;
